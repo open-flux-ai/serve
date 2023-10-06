@@ -1,0 +1,6 @@
+FROM ghcr.io/llm-gitops/serve/llama-cpp-python:v1.0.0-gpu
+
+COPY ./model.gguf /models/model.gguf
+
+## Example
+## docker run --privileged --net=host --gpus all -e PORT 80 -v /models/llama-2-7b-chat.Q5_K_M.gguf:/models/model.bin ghcr.io/llm-gitops/serve/llama-cpp-python:v1.0.0-gpu --model /models/model.bin --n_gpu_layers 3
