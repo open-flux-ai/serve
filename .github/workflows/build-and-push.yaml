@@ -37,4 +37,4 @@ jobs:
     - name: Build image
       run: |
         sudo apt-get install make
-        make build-llama-7b-gpu
+        make build-llama-70b-gpu
