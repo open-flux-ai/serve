@@ -1,0 +1,33 @@
+contents:
+  keyring:
+    - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+  repositories:
+    - https://packages.wolfi.dev/os
+  packages:
+    - wolfi-base
+    - build-base=1-r5
+    - git
+    - curl=8.4.0-r1
+    - gcc=13.2.0-r3
+    - cmake=3.27.7-r0
+    - python-3.11=3.11.6-r0
+    - python-3.11-dev=3.11.6-r0
+    - py3.11-pip=23.3.1-r0
+
+annotations:
+  "org.opencontainers.image.authors": "Chainguard Team https://www.chainguard.dev/"
+  "org.opencontainers.image.url": "https://edu.chainguard.dev/chainguard/chainguard-images/reference/apko/"
+  "org.opencontainers.image.source": "https://github.com/chainguard-images/images/tree/main/images/apko"
+
+archs:
+  - x86_64
+
+paths:
+- path: /work
+  type: directory
+  permissions: 0o777
+
+work-dir: /work
+
+entrypoint:
+  command: /bin/sh

@@ -1,0 +1,42 @@
+diff --git a/llama_cpp/server/app.py b/llama_cpp/server/app.py
+index c54e4eb..7711f76 100644
+--- a/llama_cpp/server/app.py
++++ b/llama_cpp/server/app.py
+@@ -336,6 +336,7 @@ async def create_chat_completion(
+ async def get_models(
+     llama_proxy: LlamaProxy = Depends(get_llama_proxy),
+ ) -> ModelList:
++    import os
+     return {
+         "object": "list",
+         "data": [
+@@ -344,6 +345,17 @@ async def get_models(
+                 "object": "model",
+                 "owned_by": "me",
+                 "permissions": [],
++                "metadata": {
++                    "context_size": os.getenv("LM_CTRL_CONTEXT_SIZE", ""),
++                    "family": os.getenv("LM_CTRL_FAMILY", ""),
++                    "format": os.getenv("LM_CTRL_FORMAT", ""),
++                    "model_description": os.getenv("LM_CTRL_MODEL_DESCRIPTION", ""),
++                    "model_name": os.getenv("LM_CTRL_MODEL_NAME", ""),
++                    "prompt_template": os.getenv("LM_CTRL_PROMPT_TEMPLATE", ""),
++                    "quantization": os.getenv("LM_CTRL_QUANTIZATION", ""),
++                    "stop_words": os.getenv("LM_CTRL_STOP_WORDS", ""),
++                    "model_level": os.getenv("LM_CTRL_MODEL_LEVEL", ""),
++                },
+             }
+             for model_alias in llama_proxy
+         ],
+diff --git a/llama_cpp/server/types.py b/llama_cpp/server/types.py
+index f0827d7..91bdf16 100644
+--- a/llama_cpp/server/types.py
++++ b/llama_cpp/server/types.py
+@@ -259,6 +259,7 @@ class ModelData(TypedDict):
+     object: Literal["model"]
+     owned_by: str
+     permissions: List[str]
++    metadata: Dict[str, str]
+ 
+ 
+ class ModelList(TypedDict):

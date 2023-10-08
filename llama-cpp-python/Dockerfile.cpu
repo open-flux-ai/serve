@@ -1,7 +1,6 @@
 FROM python:3.11-slim-bullseye
 
-# Re-declare the ARG after FROM
-ARG IMAGE
+ARG VERSION
 
 # Update and upgrade the existing packages 
 RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends \
@@ -12,7 +11,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-reco
     build-essential
 
 RUN python3 -m pip install --upgrade pip
-RUn pip install llama-cpp-python[server]
+RUN pip install llama-cpp-python[server]==${VERSION}
 
 FROM python:3.11-slim-bullseye
 

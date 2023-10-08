@@ -73,10 +73,10 @@ jobs:
         push: true
         builder: ${{ steps.buildx.outputs.name }}
         context: ./
-        file: ./Dockerfile
+        file: ./Dockerfile.master
         platforms: linux/amd64 # ,linux/arm64
         build-args: |
           VERSION=${{ steps.version.outputs.VERSION }}
           CMAKE_ARGS=${{ matrix.defines }}
         tags: |
-          ghcr.io/open-flux-ai/serve/llama-cpp-python:v${{ steps.version.outputs.VERSION }}-${{ matrix.build }}
+          ghcr.io/open-flux-ai/serve/llama-cpp-python:master-${{ matrix.build }}
