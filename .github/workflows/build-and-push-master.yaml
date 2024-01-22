@@ -54,7 +54,7 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Publish builder image
-      uses: chainguard-images/actions/apko-publish@main
+      uses: chainguard-images/actions/apko-publish@e20e5f71e81761ef413f4f783c124e41b71f5aab
       with:
         apko-image: ghcr.io/open-flux-ai/images/apko:0.10.0
         config: serve-build.yaml
