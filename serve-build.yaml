@@ -15,9 +15,7 @@ contents:
     - py3.11-pip=23.3.1-r0
 
 annotations:
-  "org.opencontainers.image.authors": "Chainguard Team https://www.chainguard.dev/"
-  "org.opencontainers.image.url": "https://edu.chainguard.dev/chainguard/chainguard-images/reference/apko/"
-  "org.opencontainers.image.source": "https://github.com/chainguard-images/images/tree/main/images/apko"
+  "org.opencontainers.image.source": "https://github.com/open-flux-ai/serve"
 
 archs:
   - x86_64
