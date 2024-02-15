@@ -1,0 +1,58 @@
+name: build-and-push
+
+on:
+  push:
+    branches:
+      - main  # or whichever branch you'd like to target
+
+permissions:
+  contents: write
+  id-token: write
+  packages: write # needed for ghcr.io access
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout your repo
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    # Install Flux v2 CLI
+    - name: Setup Flux CLI
+      uses: fluxcd/flux2/action@main
+
+    - name: Setup QEMU
+      uses: docker/setup-qemu-action@68827325e0b33c7199eb31dd4e31fbe9023e06e3 # v3.0.0
+
+    - name: Setup Docker Buildx
+      id: buildx
+      uses: docker/setup-buildx-action@f95db51fddba0c2d1ec667646a06c2ce06100226 # v3.0.0
+
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Get version number
+      id: version
+      run: |
+        VERSION="$(cat VERSION)"
+        echo ::set-output name=VERSION::${VERSION}
+
+    - name: Publish images
+      id: build-push
+      uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
+      with:
+        push: true
+        builder: ${{ steps.buildx.outputs.name }}
+        context: ./
+        file: ./Dockerfile.gpu
+        platforms: linux/amd64 # ,linux/arm64
+        build-args: |
+          VERSION=${{ steps.version.outputs.VERSION }}
+        tags: |
+          ghcr.io/open-flux-ai/serve/llama-cpp-python:v${{ steps.version.outputs.VERSION }}-gpu
